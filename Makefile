@@ -7,6 +7,9 @@ TAG    ?= 0.11
 NAME   ?= dev-nvim
 VOLUME_DATA ?= devdata
 USERNAME ?= dev
+DOTFILES_REF ?= v0.1.3
+GIT_NAME ?= "Bernhard Reitinger"
+GIT_EMAIL ?= "bernhard@reitinger.eu"
 
 UID_HOST := $(shell id -u)
 GID_HOST := $(shell id -g)
@@ -24,13 +27,15 @@ endif
 # ===== Build =====
 build:
 	$(ENGINE) build \
-	  --file Containerfile \
+	  --file Dockerfile \
 	  --tag $(IMAGE):$(TAG) \
 	  --build-arg USERNAME=$(USERNAME) \
 	  --build-arg UID=$(UID_HOST) \
 	  --build-arg GID=$(GID_HOST) \
 	  --build-arg DOTFILES_REPO="https://github.com/breiting/dotfiles.git" \
-	  --build-arg DOTFILES_BRANCH="main" \
+	  --build-arg DOTFILES_BRANCH=$(DOTFILES_REF) \
+	  --build-arg GIT_NAME=$(GIT_NAME) \
+	  --build-arg GIT_EMAIL=$(GIT_EMAIL) \
 	  .
 
 # ===== Volume anlegen, falls nicht vorhanden =====
